@@ -96,7 +96,7 @@ export default function Home() {
         className="flex-1 overflow-y-auto px-2 sm:px-4" 
         style={{ minHeight: 0, WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}
       >
-        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 flex-1 flex flex-col justify-center pb-2" style={{ minHeight: 'min-content' }}>
+        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 flex-1 flex flex-col justify-end pb-2">
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
