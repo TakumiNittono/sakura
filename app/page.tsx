@@ -93,10 +93,10 @@ export default function Home() {
       </header>
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto px-2 sm:px-4" 
+        className="flex-1 overflow-y-auto px-2 sm:px-3" 
         style={{ minHeight: 0, WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}
       >
-        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 flex-1 flex flex-col justify-end pb-2">
+        <div className="w-full space-y-3 sm:space-y-4 flex-1 flex flex-col justify-end pb-2">
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
