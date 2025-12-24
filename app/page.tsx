@@ -25,19 +25,22 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
   const scrollToBottom = (instant = false) => {
     setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: instant ? 'auto' : 'smooth' });
-    }, 100);
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ 
+          behavior: instant ? 'auto' : 'smooth',
+          block: 'end'
+        });
+      }
+    }, instant ? 50 : 100);
   };
 
   useEffect(() => {
-    // 初回表示時は即座にスクロール、その後はスムーズに
-    if (messages.length === 1) {
-      scrollToBottom(true);
-    } else {
-      scrollToBottom(false);
-    }
+    // メッセージが追加されたら常に下にスクロール（古いメッセージが上に上がる）
+    scrollToBottom(messages.length === 1);
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
@@ -80,8 +83,12 @@ export default function Home() {
           <h1 className="text-base sm:text-xl font-semibold text-gray-800">JAPANESE TEACHER SAKURA</h1>
         </div>
       </header>
-      <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6" style={{ minHeight: 0, WebkitOverflowScrolling: 'touch' }}>
-        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
+      <div 
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto px-2 sm:px-4 py-2" 
+        style={{ minHeight: 0, WebkitOverflowScrolling: 'touch' }}
+      >
+        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 pb-2">
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
@@ -95,7 +102,7 @@ export default function Home() {
               content="..."
             />
           )}
-          <div ref={messagesEndRef} style={{ height: '1px', scrollMarginBottom: '20px' }} />
+          <div ref={messagesEndRef} style={{ height: '1px' }} />
         </div>
       </div>
       <ChatInput onSend={handleSendMessage} disabled={isLoading} />
