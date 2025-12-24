@@ -25,7 +25,25 @@ NEXT_PUBLIC_FREE_SESSION_URL=https://your-domain.com/free-session
 npm run dev
 ```
 
-ブラウザで [http://localhost:3000](http://localhost:3000) を開いてください。
+#### アクセス方法
+
+**デスクトップ/同じデバイス:**
+- [http://localhost:3000](http://localhost:3000) を開いてください
+
+**iPhone/他のデバイスからアクセス:**
+1. MacとiPhoneが同じWi-Fiネットワークに接続されていることを確認
+2. MacのIPアドレスを確認:
+   ```bash
+   ifconfig | grep "inet " | grep -v 127.0.0.1
+   ```
+   例: `192.168.1.100` の場合
+3. iPhoneのSafariで以下にアクセス:
+   ```
+   http://[MacのIPアドレス]:3000
+   ```
+   例: `http://192.168.1.100:3000`
+
+**注意:** 開発サーバーは `-H 0.0.0.0` で起動するため、すべてのネットワークインターフェースでアクセス可能です。
 
 ## プロジェクト構造
 
