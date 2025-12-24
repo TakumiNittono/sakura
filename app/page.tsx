@@ -39,8 +39,16 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // メッセージが追加されたら常に下にスクロール（古いメッセージが上に上がる）
-    scrollToBottom(messages.length === 1);
+    // 初回表示時とメッセージ追加時に下にスクロール
+    if (messages.length === 1) {
+      // 初回は即座に下にスクロール
+      setTimeout(() => {
+        scrollToBottom(true);
+      }, 100);
+    } else {
+      // 新しいメッセージ追加時はスムーズに下にスクロール
+      scrollToBottom(false);
+    }
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
@@ -85,10 +93,10 @@ export default function Home() {
       </header>
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto px-2 sm:px-4 py-2" 
-        style={{ minHeight: 0, WebkitOverflowScrolling: 'touch' }}
+        className="flex-1 overflow-y-auto px-2 sm:px-4" 
+        style={{ minHeight: 0, WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}
       >
-        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 pb-2">
+        <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 flex-1 flex flex-col justify-end pb-2">
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
@@ -102,7 +110,7 @@ export default function Home() {
               content="..."
             />
           )}
-          <div ref={messagesEndRef} style={{ height: '1px' }} />
+          <div ref={messagesEndRef} style={{ height: '1px', flexShrink: 0 }} />
         </div>
       </div>
       <ChatInput onSend={handleSendMessage} disabled={isLoading} />
