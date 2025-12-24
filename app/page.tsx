@@ -25,12 +25,19 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (instant = false) => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: instant ? 'auto' : 'smooth' });
+    }, 100);
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // 初回表示時は即座にスクロール、その後はスムーズに
+    if (messages.length === 1) {
+      scrollToBottom(true);
+    } else {
+      scrollToBottom(false);
+    }
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
@@ -67,13 +74,13 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col h-screen bg-gradient-to-b from-pink-50 to-white safe-area-inset">
-      <header className="bg-white border-b border-pink-100 shadow-sm sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+    <main className="flex flex-col h-screen bg-gradient-to-b from-pink-50 to-white safe-area-inset" style={{ height: '100dvh' }}>
+      <header className="bg-white border-b border-pink-100 shadow-sm sticky top-0 z-10 flex-shrink-0">
+        <div className="max-w-3xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
           <h1 className="text-base sm:text-xl font-semibold text-gray-800">JAPANESE TEACHER SAKURA</h1>
         </div>
       </header>
-      <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6">
+      <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6" style={{ minHeight: 0, WebkitOverflowScrolling: 'touch' }}>
         <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
           {messages.map((message, index) => (
             <ChatMessage
@@ -88,7 +95,7 @@ export default function Home() {
               content="..."
             />
           )}
-          <div ref={messagesEndRef} />
+          <div ref={messagesEndRef} style={{ height: '1px', scrollMarginBottom: '20px' }} />
         </div>
       </div>
       <ChatInput onSend={handleSendMessage} disabled={isLoading} />

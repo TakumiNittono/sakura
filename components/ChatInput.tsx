@@ -36,8 +36,8 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="border-t border-pink-100 bg-white safe-area-inset-bottom">
-      <div className="max-w-3xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
+    <div className="border-t border-pink-100 bg-white flex-shrink-0" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <div className="max-w-3xl mx-auto px-2 sm:px-4 py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom, 0px))' }}>
         <div className="flex gap-2 items-end">
           <textarea
             ref={textareaRef}
